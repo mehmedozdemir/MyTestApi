@@ -1,0 +1,24 @@
+﻿version: '3.8'
+services:
+  webapi:
+    image: mytestapi
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    deploy:
+        replicas: 3
+        update_config:
+            parallelism: 2
+            delay: 10s
+        restart_policy:
+            condition: on-failure
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    networks:
+      - webnet
+
+networks:
+    webnet:
+        driver: bridge
